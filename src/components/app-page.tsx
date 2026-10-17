@@ -4,7 +4,7 @@ type AppPageProps = {
   title: string;
   description: string;
   mainButtonTitle: string;
-  mainButtonOnTap: () => void;
+  mainButtonOnTap?: () => void;
   secondaryButtons?: React.ReactNode[];
   numberCards?: React.ReactNode[];
   secondarySearchHeaderWidgets?: React.ReactNode[];
@@ -74,7 +74,7 @@ export default function AppPage({
                 placeholder="Search..."
                 value={searchValue || ''}
                 onChange={(e) => onSearchChange?.(e.target.value)}
-                className="w-full md:w-[300px] bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                className="w-full md:w-75 bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
               />
 
               {secondarySearchHeaderWidgets && secondarySearchHeaderWidgets.length > 0 && (

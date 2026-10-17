@@ -1,0 +1,35 @@
+{
+  "welcomeMessage": "Welcome to React and react-i18next",
+  "appHeader": "Hospital Management System",
+  "searchPlaceholder": "Search global...",
+  "common": {
+    "viewAll": "View All",
+    "time": "Time",
+    "patient": "Patient",
+    "type": "Type",
+    "status": "Status"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Live overview across the patient lifecycle, ER, IPD, OR, and revenue cycle.",
+    "newAppointment": "New Appointment",
+    "viewPatients": "View Patients",
+    "totalPatients": "Total Patients",
+    "todaysAppointments": "Today's Appointments",
+    "totalAppointmentsSubtitle": "Total appointments on file: {{count}}",
+    "erActive": "ER Active",
+    "totalErSubtitle": "Total ER today: {{count}}",
+    "bedsFree": "Beds Free",
+    "acrossAllWards": "Across all wards",
+    "activeEr": "Active ER",
+    "openEr": "Open ER",
+    "bedOccupancy": "Bed Occupancy",
+    "manageIpd": "Manage IPD",
+    "insuranceClaims": "Insurance Claims",
+    "manageClaims": "Manage Claims",
+    "columns": {
+      "call": "Call",
+      "triage": "Triage"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "welcomeMessage": "مرحبا بكم في React و react-i18next",
+  "appHeader": "نظام إدارة المستشفيات",
+  "searchPlaceholder": "بحث شامل...",
+  "common": {
+    "viewAll": "عرض الكل",
+    "time": "الوقت",
+    "patient": "المريض",
+    "type": "النوع",
+    "status": "الحالة"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "description": "نظرة عامة حية عبر دورة حياة المريض، الطوارئ، التنويم، العمليات، والتأمين.",
+    "newAppointment": "موعد جديد",
+    "viewPatients": "عرض المرضى",
+    "totalPatients": "إجمالي المرضى",
+    "todaysAppointments": "مواعيد اليوم",
+    "totalAppointmentsSubtitle": "إجمالي المواعيد المسجلة: {{count}}",
+    "erActive": "حالات الطوارئ النشطة",
+    "totalErSubtitle": "إجمالي الطوارئ اليوم: {{count}}",
+    "bedsFree": "الأسرة الشاغرة",
+    "acrossAllWards": "في جميع الأجنحة",
+    "activeEr": "طوارئ نشطة",
+    "openEr": "فتح الطوارئ",
+    "bedOccupancy": "إشغال الأسرة",
+    "manageIpd": "إدارة التنويم",
+    "insuranceClaims": "مطالبات التأمين",
+    "manageClaims": "إدارة المطالبات",
+    "columns": {
+      "call": "الاتصال",
+      "triage": "الفرز الطبي"
+    }
+  }
+}

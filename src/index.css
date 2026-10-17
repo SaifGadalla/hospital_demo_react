@@ -5,31 +5,31 @@
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
-  
+
   --color-secondary: var(--secondary);
   --color-secondary-light: var(--secondary-light);
   --color-secondary-dark: var(--secondary-dark);
-  
+
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
-  
+
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-inverse: var(--text-inverse);
-  
+
   --color-border-theme: var(--border-theme);
   --color-divider: var(--divider);
-  
+
   --color-success: var(--success);
   --color-success-bg: var(--success-background);
-  
+
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-background);
-  
+
   --color-error: var(--error);
   --color-error-bg: var(--error-background);
-  
+
   --color-info: var(--info);
   --color-info-bg: var(--info-background);
 }
@@ -39,31 +39,31 @@
   --primary: #0D9488;
   --primary-light: #99F6E4;
   --primary-dark: #115E59;
-  
+
   --secondary: #2563EB;
   --secondary-light: #93C5FD;
   --secondary-dark: #1D4ED8;
-  
+
   --background: #F8FAFC;
   --surface: #FFFFFF;
   --surface-elevated: #F1F5F9;
-  
+
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-inverse: #FFFFFF;
-  
+
   --border-theme: #E2E8F0;
   --divider: #F1F5F9;
-  
+
   --success: #059669;
   --success-background: #D1FAE5;
-  
+
   --warning: #D97706;
   --warning-background: #FEF3C7;
-  
+
   --error: #DC2626;
   --error-background: #FEE2E2;
-  
+
   --info: #0284C7;
   --info-background: #E0F2FE;
 
@@ -85,31 +85,31 @@
   --primary: #2DD4BF;
   --primary-light: #5EEAD4;
   --primary-dark: #0D9488;
-  
+
   --secondary: #60A5FA;
   --secondary-light: #93C5FD;
   --secondary-dark: #2563EB;
-  
+
   --background: #0F172A;
   --surface: #1E293B;
   --surface-elevated: #334155;
-  
+
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-inverse: #0F172A;
-  
+
   --border-theme: #334155;
   --divider: #1E293B;
-  
+
   --success: #34D399;
   --success-background: #064E3B;
-  
+
   --warning: #FBBF24;
   --warning-background: #78350F;
-  
+
   --error: #F87171;
   --error-background: #7F1D1D;
-  
+
   --info: #38BDF8;
   --info-background: #0C4A6E;
 }
@@ -120,47 +120,56 @@
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+
 @utility text-h2 {
   font-family: var(--sans);
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+
 @utility text-h3 {
   font-family: var(--sans);
   font-size: 20px;
   font-weight: 600;
 }
+
 @utility text-h4 {
   font-family: var(--sans);
   font-size: 18px;
   font-weight: 600;
 }
+
 @utility text-bodyLarge {
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 400;
 }
+
 @utility text-bodyMedium {
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 400;
 }
+
 @utility text-bodySmall {
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 400;
 }
+
 @utility text-label {
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
 }
+
 @utility text-caption {
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 500;
 }
+
 @utility text-buttonText {
   font-family: var(--sans);
   font-size: 14px;
