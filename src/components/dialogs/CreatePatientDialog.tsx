@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Patient } from '../../features/patients/types/index';
 import { useCreatePatient } from '../../features/patients/api/useCreatePatient';
 
 export default function CreatePatientDialog({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
     const { mutateAsync: createPatient, isPending } = useCreatePatient();
     const [formData, setFormData] = useState<Partial<Patient>>({
         fullName: '',
@@ -28,12 +30,12 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
                 <div className="p-6 border-b border-divider">
-                    <h2 className="text-h3 text-text-primary">New Patient</h2>
+                    <h2 className="text-h3 text-text-primary">{t('dialogs.createPatient.title')}</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col max-h-full">
                     <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Full Name</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.fullName')}</label>
                             <input
                                 required
                                 type="text"
@@ -43,7 +45,7 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Email</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.email')}</label>
                             <input
                                 type="email"
                                 className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary"
@@ -52,7 +54,7 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Mobile Phone</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.mobilePhone')}</label>
                             <input
                                 required
                                 type="tel"
@@ -63,7 +65,7 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
                         </div>
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Date of Birth</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.dateOfBirth')}</label>
                                 <input
                                     required
                                     type="date"
@@ -73,19 +75,19 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Gender</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.gender')}</label>
                                 <select
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary"
                                     value={formData.gender}
                                     onChange={e => setFormData({ ...formData, gender: e.target.value })}
                                 >
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
+                                    <option value="Male">{t('common.male')}</option>
+                                    <option value="Female">{t('common.female')}</option>
+                                    <option value="Other">{t('common.other')}</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Blood Type</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createPatient.bloodType')}</label>
                                 <select
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary"
                                     value={formData.bloodType}
@@ -109,14 +111,14 @@ export default function CreatePatientDialog({ onClose }: { onClose: () => void }
                             onClick={onClose}
                             className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
                             className="px-6 py-2 rounded-xl text-buttonText bg-primary text-white hover:bg-primary-dark transition-colors disabled:opacity-50"
                         >
-                            {isPending ? 'Saving...' : 'Save Patient'}
+                            {isPending ? t('common.saving') : t('dialogs.createPatient.savePatient')}
                         </button>
                     </div>
                 </form>

@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import {
     MdHome,
     MdDashboard,
@@ -12,12 +13,12 @@ import {
     MdMeetingRoom,
     MdHealthAndSafety,
     MdLocalHospital,
-    MdLanguage
 } from 'react-icons/md';
 
 export default function Drawer() {
     const location = useLocation();
     const currentPath = location.pathname;
+    const { t } = useTranslation();
 
     return (
         <div className="w-75 h-full bg-primary-dark text-text-inverse flex flex-col border-r border-text-inverse/10">
@@ -28,10 +29,10 @@ export default function Drawer() {
                 </div>
                 <div className="flex flex-col">
                     <h3 className="text-text-inverse text-h3 tracking-wide">
-                        Hospital App
+                        {t('drawer.hospitalApp')}
                     </h3>
                     <span className="text-text-inverse/60 text-caption">
-                        Healthcare Management
+                        {t('drawer.healthcareManagement')}
                     </span>
                 </div>
             </div>
@@ -43,67 +44,67 @@ export default function Drawer() {
             {/* Navigation Links list */}
             <div className="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-2 scrollbar-thin scrollbar-thumb-text-inverse/10">
                 <DrawerButton
-                    label="Overview"
+                    label={t('drawer.overview')}
                     link="/home"
                     icon={<MdHome />}
                     isSelected={currentPath === '/home'}
                 />
                 <DrawerButton
-                    label="Dashboard"
+                    label={t('drawer.dashboard')}
                     link="/dashboard"
                     icon={<MdDashboard />}
                     isSelected={currentPath === '/dashboard'}
                 />
                 <DrawerButton
-                    label="Patients"
+                    label={t('drawer.patients')}
                     link="/patients"
                     icon={<MdPeople />}
                     isSelected={currentPath === '/patients'}
                 />
                 <DrawerButton
-                    label="Appointments"
+                    label={t('drawer.appointments')}
                     link="/appointments"
                     icon={<MdCalendarToday />}
                     isSelected={currentPath === '/appointments'}
                 />
                 <DrawerButton
-                    label="Medical Records"
+                    label={t('drawer.medicalRecords')}
                     link="/medical-records"
                     icon={<MdFolderShared />}
                     isSelected={currentPath === '/medical-records'}
                 />
                 <DrawerButton
-                    label="Pharmacy"
+                    label={t('drawer.pharmacy')}
                     link="/pharmacy"
                     icon={<MdLocalPharmacy />}
                     isSelected={currentPath === '/pharmacy'}
                 />
                 <DrawerButton
-                    label="Laboratory"
+                    label={t('drawer.laboratory')}
                     link="/laboratory"
                     icon={<MdScience />}
                     isSelected={currentPath === '/laboratory'}
                 />
                 <DrawerButton
-                    label="Inpatient (IPD)"
+                    label={t('drawer.inpatientIPD')}
                     link="/inpatient"
                     icon={<MdHotel />}
                     isSelected={currentPath === '/inpatient'}
                 />
                 <DrawerButton
-                    label="Emergency (ER)"
+                    label={t('drawer.emergencyER')}
                     link="/emergency"
                     icon={<MdEmergency />}
                     isSelected={currentPath === '/emergency'}
                 />
                 <DrawerButton
-                    label="Operating Room"
+                    label={t('drawer.operatingRoom')}
                     link="/operating-room"
                     icon={<MdMeetingRoom />}
                     isSelected={currentPath === '/operating-room'}
                 />
                 <DrawerButton
-                    label="Insurance & Claims"
+                    label={t('drawer.insuranceClaims')}
                     link="/insurance"
                     icon={<MdHealthAndSafety />}
                     isSelected={currentPath === '/insurance-claims'}
@@ -118,18 +119,12 @@ export default function Drawer() {
                 </div>
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <span className="text-text-inverse text-bodyMedium font-bold truncate">
-                        Dr. John Doe
+                        {t('drawer.drName')}
                     </span>
                     <span className="text-text-inverse/60 text-caption truncate">
-                        Chief Medical Officer
+                        {t('drawer.drTitle')}
                     </span>
                 </div>
-                <button
-                    className="text-text-inverse/60 hover:text-text-inverse transition-colors p-1"
-                    title="Language"
-                >
-                    <MdLanguage className="text-lg" />
-                </button>
             </div>
         </div>
     );

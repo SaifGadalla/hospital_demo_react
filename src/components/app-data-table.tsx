@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type AppColumn = {
   label: React.ReactNode;
@@ -7,7 +8,7 @@ export type AppColumn = {
 };
 
 export type AppDataRow = {
-  id: string | number;
+  id?: string | number | undefined;
   cells: React.ReactNode[];
 };
 
@@ -18,6 +19,7 @@ type AppDataTableProps = {
 };
 
 export default function AppDataTable({ columns, rows, headingRowColor }: AppDataTableProps) {
+  const { t } = useTranslation();
   // Helper to determine style for a column/cell
   const getColumnStyle = (col: AppColumn) => {
     if (col.width !== undefined) {
@@ -47,9 +49,9 @@ export default function AppDataTable({ columns, rows, headingRowColor }: AppData
       {/* Scrollable Table Body */}
       <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
         {rows.length > 0 ? (
-          rows.map((row) => (
+          rows.map((row, rowIdx) => (
             <div 
-              key={row.id}
+              key={row.id ?? rowIdx}
               className="flex items-center border-b border-divider bg-surface hover:bg-surface-elevated/50 transition-colors"
             >
               {row.cells.map((cell, idx) => {
@@ -68,7 +70,7 @@ export default function AppDataTable({ columns, rows, headingRowColor }: AppData
           ))
         ) : (
           <div className="p-8 text-center text-text-secondary text-bodyMedium">
-            No data available.
+            {t('common.noRecordsFound')}
           </div>
         )}
       </div>

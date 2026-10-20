@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppPage from '../components/app-page';
 import AppDataTable, { type AppColumn, type AppDataRow } from '../components/app-data-table';
 import AppDetailRow from '../components/app-detail-row';
@@ -10,6 +11,7 @@ import CreatePatientDialog from '../components/dialogs/CreatePatientDialog';
 export default function Patients() {
     const [searchTerm, setSearchTerm] = useState('');
     const [genderFilter, setGenderFilter] = useState('');
+    const { t } = useTranslation();
 
     const { data, isLoading } = usePatients();
 
@@ -28,14 +30,14 @@ export default function Patients() {
     });
 
     const columns: AppColumn[] = [
-        { label: 'MRN', width: 130 },
-        { label: 'Patient', flex: 2 },
-        { label: 'DOB / Age', width: 140 },
-        { label: 'Gender', width: 90 },
-        { label: 'Phone', width: 130 },
-        { label: 'Blood', width: 70 },
-        { label: 'Status', width: 90 },
-        { label: 'Actions', width: 140 },
+        { label: t('patients.columns.mrn'), width: 130 },
+        { label: t('patients.columns.patient'), flex: 2 },
+        { label: t('patients.columns.dobAge'), width: 140 },
+        { label: t('patients.columns.gender'), width: 90 },
+        { label: t('patients.columns.phone'), width: 130 },
+        { label: t('patients.columns.blood'), width: 70 },
+        { label: t('patients.columns.status'), width: 90 },
+        { label: t('patients.columns.actions'), width: 140 },
     ];
 
     const rows: AppDataRow[] = filteredPatients.map(patient => ({
@@ -59,35 +61,35 @@ export default function Patients() {
                 </div>
             </div>,
             <span className="text-bodyMedium text-text-primary">
-                {patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : 'N/A'}
+                {patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : t('common.notAvailable')}
                 <span className="text-text-secondary mx-1">/</span>
                 {patient.age}
             </span>,
             <span className="text-bodyMedium text-text-primary capitalize">{patient.gender}</span>,
             <span className="text-bodyMedium text-text-primary">{patient.mobile || patient.phone}</span>,
-            <span className="text-bodyMedium text-text-primary">{patient.bloodType || 'N/A'}</span>,
+            <span className="text-bodyMedium text-text-primary">{patient.bloodType || t('common.notAvailable')}</span>,
             <span className={`text-caption font-bold px-2 py-1 rounded ${patient.isActive !== false ? 'bg-success/20 text-success' : 'bg-gray-200 text-gray-600'}`}>
-                {patient.isActive !== false ? 'Active' : 'Inactive'}
+                {patient.isActive !== false ? t('common.active') : t('common.inactive')}
             </span>,
             <div className="flex items-center gap-1">
                 <button
                     onClick={() => setViewPatient(patient)}
                     className="p-2 text-primary hover:bg-primary/10 rounded-full transition-colors"
-                    title="View Details"
+                    title={t('common.viewDetails')}
                 >
                     <MdVisibility size={18} />
                 </button>
                 <button
                     onClick={() => console.log('Edit', patient.id)}
                     className="p-2 text-text-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors"
-                    title="Edit Patient"
+                    title={t('common.editPatient')}
                 >
                     <MdEdit size={18} />
                 </button>
                 <button
                     onClick={() => setDeletePatient(patient)}
                     className="p-2 text-error hover:bg-error/10 rounded-full transition-colors"
-                    title="Delete Patient"
+                    title={t('common.deletePatient')}
                 >
                     <MdDelete size={18} />
                 </button>
@@ -98,9 +100,9 @@ export default function Patients() {
     return (
         <>
             <AppPage
-                title="Patients"
-                description="Manage patient records, view details, and update statuses."
-                mainButtonTitle="Add Patient"
+                title={t('patients.title')}
+                description={t('patients.description')}
+                mainButtonTitle={t('patients.addPatient')}
                 mainButtonOnTap={() => setIsCreateOpen(true)}
                 hasSearch={true}
                 searchValue={searchTerm}
@@ -112,14 +114,14 @@ export default function Patients() {
                         onChange={(e) => setGenderFilter(e.target.value)}
                         className="bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary focus:outline-none focus:border-primary transition-colors cursor-pointer min-w-37.5"
                     >
-                        <option value="">All Genders</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="">{t('common.allGenders')}</option>
+                        <option value="male">{t('common.male')}</option>
+                        <option value="female">{t('common.female')}</option>
                     </select>
                 ]}
                 table={
                     isLoading ? (
-                        <div className="p-8 text-center text-text-secondary">Loading patients...</div>
+                        <div className="p-8 text-center text-text-secondary">{t('patients.loadingPatients')}</div>
                     ) : (
                         <AppDataTable columns={columns} rows={rows} />
                     )
@@ -139,30 +141,30 @@ export default function Patients() {
                             <h2 className="text-h3 text-text-primary">{viewPatient.fullName}</h2>
                         </div>
                         <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
-                            <AppDetailRow label="MRN" value={viewPatient.mrn} />
-                            <AppDetailRow label="Full Name" value={viewPatient.fullName} />
-                            <AppDetailRow label="DOB" value={viewPatient.dateOfBirth} />
-                            <AppDetailRow label="Age" value={viewPatient.age.toString()} />
-                            <AppDetailRow label="Gender" value={viewPatient.gender} />
-                            <AppDetailRow label="Blood Type" value={viewPatient.bloodType} />
-                            <AppDetailRow label="National ID" value={viewPatient.nationalId} />
-                            <AppDetailRow label="Email" value={viewPatient.email} />
-                            <AppDetailRow label="Mobile" value={viewPatient.mobile} />
-                            <AppDetailRow label="Address" value={viewPatient.address} />
+                            <AppDetailRow label={t('patients.detail.mrn')} value={viewPatient.mrn} />
+                            <AppDetailRow label={t('patients.detail.fullName')} value={viewPatient.fullName} />
+                            <AppDetailRow label={t('patients.detail.dob')} value={viewPatient.dateOfBirth} />
+                            <AppDetailRow label={t('patients.detail.age')} value={viewPatient.age.toString()} />
+                            <AppDetailRow label={t('patients.detail.gender')} value={viewPatient.gender} />
+                            <AppDetailRow label={t('patients.detail.bloodType')} value={viewPatient.bloodType} />
+                            <AppDetailRow label={t('patients.detail.nationalId')} value={viewPatient.nationalId} />
+                            <AppDetailRow label={t('patients.detail.email')} value={viewPatient.email} />
+                            <AppDetailRow label={t('patients.detail.mobile')} value={viewPatient.mobile} />
+                            <AppDetailRow label={t('patients.detail.address')} value={viewPatient.address} />
                             <hr className="border-divider my-2" />
-                            <AppDetailRow label="Emergency Contact" value={viewPatient.emergencyContactName} />
-                            <AppDetailRow label="Emergency Phone" value={viewPatient.emergencyContactPhone} />
-                            <AppDetailRow label="Relationship" value={viewPatient.emergencyContactRelationship} />
+                            <AppDetailRow label={t('patients.detail.emergencyContact')} value={viewPatient.emergencyContactName} />
+                            <AppDetailRow label={t('patients.detail.emergencyPhone')} value={viewPatient.emergencyContactPhone} />
+                            <AppDetailRow label={t('patients.detail.relationship')} value={viewPatient.emergencyContactRelationship} />
                             <hr className="border-divider my-2" />
-                            <AppDetailRow label="Status" value={viewPatient.isActive ? 'Active' : 'Inactive'} />
-                            <AppDetailRow label="VIP" value={viewPatient.isVIP ? 'Yes' : 'No'} />
+                            <AppDetailRow label={t('patients.detail.status')} value={viewPatient.isActive ? t('common.active') : t('common.inactive')} />
+                            <AppDetailRow label={t('patients.detail.vip')} value={viewPatient.isVIP ? t('common.yes') : t('common.no')} />
                         </div>
                         <div className="p-4 border-t border-divider flex justify-end">
                             <button
                                 onClick={() => setViewPatient(null)}
                                 className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                Close
+                                {t('common.close')}
                             </button>
                         </div>
                     </div>
@@ -174,9 +176,9 @@ export default function Patients() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="p-6">
-                            <h2 className="text-h3 text-text-primary mb-2">Confirm Delete</h2>
+                            <h2 className="text-h3 text-text-primary mb-2">{t('patients.confirmDelete')}</h2>
                             <p className="text-bodyMedium text-text-secondary">
-                                Are you sure you want to delete {deletePatient.fullName}? This action cannot be undone.
+                                {t('patients.confirmDeleteMessage', { name: deletePatient.fullName })}
                             </p>
                         </div>
                         <div className="p-4 bg-surface-elevated flex justify-end gap-3">
@@ -184,7 +186,7 @@ export default function Patients() {
                                 onClick={() => setDeletePatient(null)}
                                 className="px-5 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </button>
                             <button
                                 onClick={() => {
@@ -193,7 +195,7 @@ export default function Patients() {
                                 }}
                                 className="px-5 py-2 rounded-xl text-buttonText text-error hover:bg-error/10 transition-colors"
                             >
-                                Delete
+                                {t('common.delete')}
                             </button>
                         </div>
                     </div>

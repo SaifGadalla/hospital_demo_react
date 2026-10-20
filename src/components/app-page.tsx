@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type AppPageProps = {
   title: string;
@@ -33,6 +34,7 @@ export default function AppPage({
   searchValue,
   onSearchChange,
 }: AppPageProps) {
+  const { t } = useTranslation();
   return (
     <div className="w-full h-full bg-background">
       <div className="max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 py-6 flex flex-col gap-6">
@@ -71,7 +73,7 @@ export default function AppPage({
             <div className="flex flex-col md:flex-row md:items-center gap-3">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={t('common.search')}
                 value={searchValue || ''}
                 onChange={(e) => onSearchChange?.(e.target.value)}
                 className="w-full md:w-[300px] bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"

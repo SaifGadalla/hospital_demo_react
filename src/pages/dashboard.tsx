@@ -1,4 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router"; // Added useSearchParams
+import { useTranslation } from "react-i18next";
 import AppPage from "../components/app-page";
 import NumberCard from "../components/number-card";
 import StatisticsCard from "../components/statistics-card";
@@ -28,7 +29,7 @@ const TriageBadge = ({ level }: { level: number }) => {
         'bg-blue-500 text-white',
     ];
     const color = colors[level] || colors[0];
-    return <span className={`px-2 py-1 rounded text-caption font-bold ${color}`}>Level {level}</span>;
+    return <span className={`px-2 py-1 rounded text-caption font-bold ${color}`}>{level}</span>;
 };
 
 const StatusBadge = ({ status }: { status: string }) => {
@@ -45,6 +46,7 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const paramsStr = searchParams.toString();
+    const { t } = useTranslation();
 
     // Fetch from all features independently
     const { data: appointmentsData, isLoading: isLoadingAppts } = useTodayAppointments(paramsStr);
@@ -59,16 +61,16 @@ export default function Dashboard() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <p className="text-bodyLarge text-text-secondary">Loading Dashboard...</p>
+                <p className="text-bodyLarge text-text-secondary">{t('dashboard.loadingDashboard')}</p>
             </div>
         );
     }
 
     const appointmentsColumns: AppColumn[] = [
-        { label: 'Time', width: 70 },
-        { label: 'Patient', flex: 1 },
-        { label: 'Type', width: 120 },
-        { label: 'Status', flex: 1 },
+        { label: t('dashboard.columns.time'), width: 70 },
+        { label: t('dashboard.columns.patient'), flex: 1 },
+        { label: t('dashboard.columns.type'), width: 120 },
+        { label: t('dashboard.columns.status'), flex: 1 },
     ];
 
     const appointmentsRows: AppDataRow[] = appointmentsData?.items?.map((a: Appointment) => ({
@@ -82,10 +84,10 @@ export default function Dashboard() {
     })) || [];
 
     const erColumns: AppColumn[] = [
-        { label: 'Call', width: 130 },
-        { label: 'Patient', flex: 1 },
-        { label: 'Triage', width: 90 },
-        { label: 'Status', flex: 1 },
+        { label: t('dashboard.columns.call'), width: 130 },
+        { label: t('dashboard.columns.patient'), flex: 1 },
+        { label: t('dashboard.columns.triage'), width: 90 },
+        { label: t('dashboard.columns.status'), flex: 1 },
     ];
 
     const erRows: AppDataRow[] = erData?.items?.map((e: ERPatient) => ({
@@ -100,9 +102,9 @@ export default function Dashboard() {
 
     return (
         <AppPage
-            title="Dashboard"
-            description="Live overview across the patient lifecycle, ER, IPD, OR, and revenue cycle."
-            mainButtonTitle="New Appointment"
+            title={t('dashboard.title')}
+            description={t('dashboard.description')}
+            mainButtonTitle={t('dashboard.newAppointment')}
             mainButtonOnTap={() => navigate('/appointments')}
             secondaryButtons={[
                 <button
@@ -110,36 +112,36 @@ export default function Dashboard() {
                     onClick={() => navigate('/patients')}
                     className="text-primary hover:bg-primary/10 px-4 py-2 rounded-xl text-buttonText transition-colors"
                 >
-                    View Patients
+                    {t('dashboard.viewPatients')}
                 </button>
             ]}
             numberCards={[
                 <NumberCard
                     key="1"
-                    title="Total Patients"
+                    title={t('dashboard.totalPatients')}
                     icon={<MdPeople />}
                     value={patientsStats?.totalPatients || 0}
                 />,
                 <NumberCard
                     key="2"
-                    title="Today's Appointments"
+                    title={t('dashboard.todaysAppointments')}
                     icon={<MdCalendarToday />}
                     value={appointmentsData?.items?.length || 0}
-                    subtitle={`Total appointments on file: ${appointmentsData?.totalCount || 0}`}
+                    subtitle={t('dashboard.totalAppointmentsOnFile', { count: appointmentsData?.totalCount || 0 })}
                 />,
                 <NumberCard
                     key="3"
-                    title="ER Active"
+                    title={t('dashboard.erActive')}
                     icon={<MdBed />}
                     value={erData?.items?.length || 0}
-                    subtitle={`Total ER today: ${erData?.totalCount || 0}`}
+                    subtitle={t('dashboard.totalERToday', { count: erData?.totalCount || 0 })}
                 />,
                 <NumberCard
                     key="4"
-                    title="Beds Free"
+                    title={t('dashboard.bedsFree')}
                     icon={<MdHealing />}
                     value={`${bedsStats?.freeBeds || 0} / ${bedsStats?.totalBeds || 0}`}
-                    subtitle="Across all wards"
+                    subtitle={t('common.acrossAllWards')}
                 />
             ]}
             customBody={
@@ -147,10 +149,10 @@ export default function Dashboard() {
                     {/* Today's Appointments */}
                     <div className="h-100">
                         <StatisticsCard
-                            title={<h3 className="text-h4 text-text-primary">Today's Appointments</h3>}
+                            title={<h3 className="text-h4 text-text-primary">{t('dashboard.todaysAppointmentsCard')}</h3>}
                             action={
                                 <button className="text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-buttonText transition-colors">
-                                    View All
+                                    {t('common.viewAll')}
                                 </button>
                             }
                             content={<AppDataTable columns={appointmentsColumns} rows={appointmentsRows} />}
@@ -160,10 +162,10 @@ export default function Dashboard() {
                     {/* Active ER */}
                     <div className="h-100">
                         <StatisticsCard
-                            title={<h3 className="text-h4 text-text-primary">Active ER</h3>}
+                            title={<h3 className="text-h4 text-text-primary">{t('dashboard.activeER')}</h3>}
                             action={
                                 <button className="text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-buttonText transition-colors">
-                                    Open ER
+                                    {t('dashboard.openER')}
                                 </button>
                             }
                             content={<AppDataTable columns={erColumns} rows={erRows} />}
@@ -173,10 +175,10 @@ export default function Dashboard() {
                     {/* Bed Occupancy */}
                     <div className="h-100">
                         <StatisticsCard
-                            title={<h3 className="text-h4 text-text-primary">Bed Occupancy</h3>}
+                            title={<h3 className="text-h4 text-text-primary">{t('dashboard.bedOccupancy')}</h3>}
                             action={
                                 <button className="text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-buttonText transition-colors">
-                                    Manage IPD
+                                    {t('dashboard.manageIPD')}
                                 </button>
                             }
                             content={
@@ -206,16 +208,18 @@ export default function Dashboard() {
                     {/* Insurance Claims */}
                     <div className="h-100">
                         <StatisticsCard
-                            title={<h3 className="text-h4 text-text-primary">Insurance Claims</h3>}
+                            title={<h3 className="text-h4 text-text-primary">{t('dashboard.insuranceClaims')}</h3>}
                             action={
                                 <button className="text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg text-buttonText transition-colors">
-                                    Manage Claims
+                                    {t('dashboard.manageClaims')}
                                 </button>
                             }
                             content={
                                 <div className="flex flex-col p-4 gap-6">
                                     {insuranceData?.items.map((claim: InsuranceClaim) => {
-                                        const percentage = claim.total > 0 ? Math.round((claim.claimed / claim.total) * 100) : 0;
+                                        const total = (claim.total ?? claim.totalAmount) || 0;
+                                        const claimed = (claim.claimed ?? claim.claimedAmount) || 0;
+                                        const percentage = total > 0 ? Math.round((claimed / total) * 100) : 0;
                                         return (
                                             <div key={claim.id} className="flex items-center gap-4">
                                                 <span className="w-1/3 text-bodyMedium font-medium text-text-primary truncate">

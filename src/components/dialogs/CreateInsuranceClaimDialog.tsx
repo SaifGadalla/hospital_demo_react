@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { InsuranceClaim } from '../../features/insurance/types';
 import { useCreateInsuranceClaim } from '../../features/insurance/api/useCreateInsuranceClaim';
 
 export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
     const { mutateAsync: createClaim, isPending } = useCreateInsuranceClaim();
     const [formData, setFormData] = useState<Partial<InsuranceClaim>>({
         patientId: '',
@@ -32,13 +34,13 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="p-6 border-b border-divider shrink-0">
-                    <h2 className="text-h3 text-text-primary">New Insurance Claim</h2>
+                    <h2 className="text-h3 text-text-primary">{t('dialogs.createInsuranceClaim.title')}</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
                     <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Patient ID</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.patientId')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -48,7 +50,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Patient Name</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.patientName')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -61,7 +63,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
 
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Insurance Plan ID</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.insurancePlanId')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -71,7 +73,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Insurance Plan Name</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.insurancePlanName')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -83,7 +85,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Service Date</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.serviceDate')}</label>
                             <input 
                                 required
                                 type="date"
@@ -95,7 +97,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
 
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Total Amount ($)</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.totalAmount')}</label>
                                 <input 
                                     required
                                     type="number"
@@ -106,7 +108,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Claimed Amount ($)</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.claimedAmount')}</label>
                                 <input 
                                     required
                                     type="number"
@@ -120,20 +122,20 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
 
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Diagnosis Codes</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.diagnosisCodes')}</label>
                                 <input 
                                     type="text"
-                                    placeholder="e.g. J01.90"
+                                    placeholder={t('dialogs.createInsuranceClaim.diagnosisCodesPlaceholder')}
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary" 
                                     value={formData.diagnosisCodes} 
                                     onChange={e => setFormData({ ...formData, diagnosisCodes: e.target.value })} 
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Procedure Codes</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.procedureCodes')}</label>
                                 <input 
                                     type="text"
-                                    placeholder="e.g. 99214"
+                                    placeholder={t('dialogs.createInsuranceClaim.procedureCodesPlaceholder')}
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary" 
                                     value={formData.procedureCodes} 
                                     onChange={e => setFormData({ ...formData, procedureCodes: e.target.value })} 
@@ -142,7 +144,7 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Notes</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createInsuranceClaim.notes')}</label>
                             <textarea 
                                 className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary min-h-20" 
                                 value={formData.notes} 
@@ -157,14 +159,14 @@ export default function CreateInsuranceClaimDialog({ onClose }: { onClose: () =>
                             onClick={onClose}
                             className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
                             className="px-6 py-2 rounded-xl text-buttonText bg-primary text-white hover:bg-primary-dark transition-colors disabled:opacity-50"
                         >
-                            {isPending ? 'Saving...' : 'Submit Claim'}
+                            {isPending ? t('common.saving') : t('dialogs.createInsuranceClaim.submitClaim')}
                         </button>
                     </div>
                 </form>

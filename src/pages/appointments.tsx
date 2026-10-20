@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppPage from '../components/app-page';
 import AppDataTable, { type AppColumn, type AppDataRow } from '../components/app-data-table';
 
@@ -11,6 +12,7 @@ export default function Appointments() {
     const [dateFilter, setDateFilter] = useState('');
     const { data, isLoading } = useAppointments();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const { t } = useTranslation();
 
     // Filter appointments based on search, type, and date
     const appointments = data?.items || [];
@@ -29,12 +31,12 @@ export default function Appointments() {
     };
 
     const columns: AppColumn[] = [
-        { label: 'Appt Number', width: 130 },
-        { label: 'Date & Time', width: 180 },
-        { label: 'Patient', flex: 2 },
-        { label: 'Type', width: 140 },
-        { label: 'Doctor', flex: 1 },
-        { label: 'Status', width: 120 },
+        { label: t('appointments.columns.apptNumber'), width: 130 },
+        { label: t('appointments.columns.dateTime'), width: 180 },
+        { label: t('appointments.columns.patient'), flex: 2 },
+        { label: t('appointments.columns.type'), width: 140 },
+        { label: t('appointments.columns.doctor'), flex: 1 },
+        { label: t('appointments.columns.status'), width: 120 },
     ];
 
     const rows: AppDataRow[] = filteredAppointments.map(appt => ({
@@ -45,7 +47,7 @@ export default function Appointments() {
                 {appt.appointmentDate ? new Date(appt.appointmentDate).toLocaleString('en-US', {
                     month: '2-digit', day: '2-digit', year: 'numeric',
                     hour: 'numeric', minute: '2-digit', hour12: true
-                }) : 'N/A'}
+                }) : t('common.notAvailable')}
             </span>,
             <span className="text-bodyMedium font-medium text-text-primary">{appt.patientName}</span>,
             <span className="text-bodyMedium text-text-primary">{appt.appointmentType}</span>,
@@ -63,9 +65,9 @@ export default function Appointments() {
     return (
         <>
         <AppPage
-            title="Appointments"
-            description="Manage and schedule patient appointments and procedures."
-            mainButtonTitle="Schedule Appointment"
+            title={t('appointments.title')}
+            description={t('appointments.description')}
+            mainButtonTitle={t('appointments.scheduleAppointment')}
             mainButtonOnTap={() => setIsCreateOpen(true)}
             secondaryButtons={[
                 <button
@@ -73,14 +75,14 @@ export default function Appointments() {
                     onClick={() => console.log('Board View')}
                     className="text-primary hover:bg-primary/10 px-4 py-2 rounded-xl text-buttonText transition-colors"
                 >
-                    Board View
+                    {t('appointments.boardView')}
                 </button>,
                 <button
                     key="list"
                     onClick={() => console.log('List View')}
                     className="text-primary hover:bg-primary/10 px-4 py-2 rounded-xl text-buttonText transition-colors"
                 >
-                    List View
+                    {t('appointments.listView')}
                 </button>
             ]}
             hasSearch={true}
@@ -93,10 +95,10 @@ export default function Appointments() {
                     onChange={(e) => setTypeFilter(e.target.value)}
                     className="bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary focus:outline-none focus:border-primary transition-colors cursor-pointer min-w-37.5"
                 >
-                    <option value="">All Types</option>
-                    <option value="Consultation">Consultation</option>
-                    <option value="Follow-up">Follow-up</option>
-                    <option value="Procedure">Procedure</option>
+                    <option value="">{t('common.allTypes')}</option>
+                    <option value="Consultation">{t('dialogs.createAppointment.consultation')}</option>
+                    <option value="Follow-up">{t('dialogs.createAppointment.followUp')}</option>
+                    <option value="Procedure">{t('dialogs.createAppointment.procedure')}</option>
                 </select>,
                 <input
                     key="date-filter"
@@ -110,12 +112,12 @@ export default function Appointments() {
                     onClick={handleClearFilters}
                     className="text-text-secondary hover:text-text-primary hover:bg-black/5 dark:hover:bg-white/5 px-4 py-2.5 rounded-xl text-buttonText transition-colors"
                 >
-                    Clear Filters
+                    {t('common.clearFilters')}
                 </button>
             ]}
             table={
                 isLoading ? (
-                    <div className="p-8 text-center text-text-secondary">Loading appointments...</div>
+                    <div className="p-8 text-center text-text-secondary">{t('appointments.loadingAppointments')}</div>
                 ) : (
                     <AppDataTable columns={columns} rows={rows} />
                 )

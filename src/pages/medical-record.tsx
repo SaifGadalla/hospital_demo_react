@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppPage from '../components/app-page';
 import { MdDelete } from 'react-icons/md';
 
@@ -11,6 +12,7 @@ export default function MedicalRecords() {
     const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const { t } = useTranslation();
 
     // Filter records
     const records = data?.items || [];
@@ -29,20 +31,20 @@ export default function MedicalRecords() {
     return (
         <>
             <AppPage
-                title="Medical Records"
-                description="View and manage patient clinical histories, diagnoses, and treatment plans."
-                mainButtonTitle="New Record"
+                title={t('medicalRecords.title')}
+                description={t('medicalRecords.description')}
+                mainButtonTitle={t('medicalRecords.newRecord')}
                 mainButtonOnTap={() => setIsCreateOpen(true)}
                 customBody={
                     <div className="flex flex-col lg:flex-row gap-5 mt-4 items-start">
                         {/* Records List Panel */}
                         <div className="w-full lg:w-87.5 shrink-0 bg-surface border border-border-theme rounded-xl p-4 flex flex-col max-h-200">
-                            <h4 className="text-h4 text-text-primary mb-3">Records</h4>
+                            <h4 className="text-h4 text-text-primary mb-3">{t('medicalRecords.records')}</h4>
                             <hr className="border-divider mb-4" />
 
                             <input
                                 type="text"
-                                placeholder="Search records..."
+                                placeholder={t('medicalRecords.searchRecords')}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors mb-4"
@@ -61,22 +63,22 @@ export default function MedicalRecords() {
                                                 }`}
                                         >
                                             <span className={`text-bodyMedium text-text-primary ${isSelected ? 'font-semibold' : 'font-normal'}`}>
-                                                Record ID: {record.id?.substring(0, 13)}...
+                                                {t('medicalRecords.recordId')}: {record.id?.substring(0, 13)}...
                                             </span>
                                             <span className="text-caption text-text-secondary mt-1">
                                                 {record.visitDate
                                                     ? new Date(record.visitDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
-                                                    : 'No Date'
+                                                    : t('common.noDate')
                                                 }
                                             </span>
                                         </button>
                                     );
                                 })}
                                 {isLoading && (
-                                    <p className="text-bodyMedium text-text-secondary text-center py-4">Loading...</p>
+                                    <p className="text-bodyMedium text-text-secondary text-center py-4">{t('common.loading')}</p>
                                 )}
                                 {!isLoading && filteredRecords.length === 0 && (
-                                    <p className="text-bodyMedium text-text-secondary text-center py-4">No records found.</p>
+                                    <p className="text-bodyMedium text-text-secondary text-center py-4">{t('common.noRecordsFound')}</p>
                                 )}
                             </div>
                         </div>
@@ -86,35 +88,35 @@ export default function MedicalRecords() {
                             {!selectedRecord ? (
                                 <div className="h-full flex items-center justify-center">
                                     <span className="text-bodyMedium text-text-secondary">
-                                        Select a record to view details
+                                        {t('medicalRecords.selectRecord')}
                                     </span>
                                 </div>
                             ) : (
                                 <div className="flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-h3 text-text-primary">Record Details</h3>
+                                        <h3 className="text-h3 text-text-primary">{t('medicalRecords.recordDetails')}</h3>
                                         <button
                                             onClick={() => setIsDeleteDialogOpen(true)}
                                             className="flex items-center gap-2 text-error hover:bg-error/10 px-3 py-1.5 rounded-lg transition-colors text-buttonText"
                                         >
                                             <MdDelete size={18} />
-                                            Delete
+                                            {t('common.delete')}
                                         </button>
                                     </div>
                                     <hr className="border-divider mb-6" />
 
                                     <div className="flex flex-col gap-5 overflow-y-auto custom-scrollbar pr-2">
-                                        <DetailBlock label="Patient ID" value={selectedRecord.patientId} />
-                                        <DetailBlock label="Doctor ID" value={selectedRecord.doctorId} />
-                                        <DetailBlock label="Diagnosis Code" value={selectedRecord.diagnosisCode} />
-                                        <DetailBlock label="Diagnosis Description" value={selectedRecord.diagnosisDescription} />
-                                        <DetailBlock label="Subjective" value={selectedRecord.subjective} />
-                                        <DetailBlock label="Objective" value={selectedRecord.objective} />
-                                        <DetailBlock label="Assessment" value={selectedRecord.assessment} />
-                                        <DetailBlock label="Plan" value={selectedRecord.plan} />
-                                        <DetailBlock label="Allergies" value={selectedRecord.allergies} />
-                                        <DetailBlock label="Current Medications" value={selectedRecord.currentMedications} />
-                                        <DetailBlock label="Clinical Notes" value={selectedRecord.clinicalNotes} />
+                                        <DetailBlock label={t('medicalRecords.detail.patientId')} value={selectedRecord.patientId} />
+                                        <DetailBlock label={t('medicalRecords.detail.doctorId')} value={selectedRecord.doctorId} />
+                                        <DetailBlock label={t('medicalRecords.detail.diagnosisCode')} value={selectedRecord.diagnosisCode} />
+                                        <DetailBlock label={t('medicalRecords.detail.diagnosisDescription')} value={selectedRecord.diagnosisDescription} />
+                                        <DetailBlock label={t('medicalRecords.detail.subjective')} value={selectedRecord.subjective} />
+                                        <DetailBlock label={t('medicalRecords.detail.objective')} value={selectedRecord.objective} />
+                                        <DetailBlock label={t('medicalRecords.detail.assessment')} value={selectedRecord.assessment} />
+                                        <DetailBlock label={t('medicalRecords.detail.plan')} value={selectedRecord.plan} />
+                                        <DetailBlock label={t('medicalRecords.detail.allergies')} value={selectedRecord.allergies} />
+                                        <DetailBlock label={t('medicalRecords.detail.currentMedications')} value={selectedRecord.currentMedications} />
+                                        <DetailBlock label={t('medicalRecords.detail.clinicalNotes')} value={selectedRecord.clinicalNotes} />
                                     </div>
                                 </div>
                             )}
@@ -128,9 +130,9 @@ export default function MedicalRecords() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="p-6">
-                            <h2 className="text-h3 text-text-primary mb-2">Delete Record</h2>
+                            <h2 className="text-h3 text-text-primary mb-2">{t('medicalRecords.deleteRecord')}</h2>
                             <p className="text-bodyMedium text-text-secondary">
-                                Are you sure you want to delete this medical record? This action cannot be undone.
+                                {t('medicalRecords.deleteRecordMessage')}
                             </p>
                         </div>
                         <div className="p-4 bg-surface flex justify-end gap-3 border-t border-divider">
@@ -138,13 +140,13 @@ export default function MedicalRecords() {
                                 onClick={() => setIsDeleteDialogOpen(false)}
                                 className="px-5 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </button>
                             <button
                                 onClick={handleDelete}
                                 className="px-5 py-2 rounded-xl text-buttonText text-error hover:bg-error/10 transition-colors"
                             >
-                                Delete
+                                {t('common.delete')}
                             </button>
                         </div>
                     </div>

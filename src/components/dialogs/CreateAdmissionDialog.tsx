@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Admission } from '../../features/patients/types/index';
 import { useAdmitPatient } from '../../features/clinical/api/useAdmitPatient';
 
 export default function CreateAdmissionDialog({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
     const { mutateAsync: admitPatient, isPending } = useAdmitPatient();
     const [formData, setFormData] = useState<Partial<Admission>>({
         patientName: '',
@@ -26,12 +28,12 @@ export default function CreateAdmissionDialog({ onClose }: { onClose: () => void
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
                 <div className="p-6 border-b border-divider shrink-0">
-                    <h2 className="text-h3 text-text-primary">Admit Patient</h2>
+                    <h2 className="text-h3 text-text-primary">{t('dialogs.createAdmission.title')}</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col">
                     <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Patient Name</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createAdmission.patientName')}</label>
                             <input
                                 required
                                 type="text"
@@ -41,7 +43,7 @@ export default function CreateAdmissionDialog({ onClose }: { onClose: () => void
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Bed Number (e.g. Ward A - 101)</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createAdmission.bedNumber')}</label>
                             <input
                                 required
                                 type="text"
@@ -51,7 +53,7 @@ export default function CreateAdmissionDialog({ onClose }: { onClose: () => void
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Diagnosis</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createAdmission.diagnosis')}</label>
                             <input
                                 required
                                 type="text"
@@ -61,7 +63,7 @@ export default function CreateAdmissionDialog({ onClose }: { onClose: () => void
                             />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Date</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createAdmission.date')}</label>
                             <input
                                 required
                                 type="date"
@@ -77,14 +79,14 @@ export default function CreateAdmissionDialog({ onClose }: { onClose: () => void
                             onClick={onClose}
                             className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
                             className="px-6 py-2 rounded-xl text-buttonText bg-primary text-white hover:bg-primary-dark transition-colors disabled:opacity-50"
                         >
-                            {isPending ? 'Admitting...' : 'Admit Patient'}
+                            {isPending ? t('dialogs.createAdmission.admitting') : t('dialogs.createAdmission.admitPatient')}
                         </button>
                     </div>
                 </form>

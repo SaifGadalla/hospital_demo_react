@@ -15,6 +15,8 @@ import Inpatient from './pages/inpatient.tsx'
 import Emergency from './pages/emergency.tsx'
 import OperatingRoom from './pages/operating-room.tsx'
 import Insurance from './pages/insurance.tsx'
+import { I18nextProvider } from 'react-i18next'
+import i18n from './i18n.tsx'
 
 const queryClient = new QueryClient();
 
@@ -74,7 +76,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <I18nextProvider i18n={i18n}>
+        <RouterProvider router={router} />
+      </I18nextProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

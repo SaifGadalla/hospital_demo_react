@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import AppPage from "../components/app-page";
 
 export default function Home() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     function navToDashboard() {
         navigate("/dashboard");
@@ -10,9 +12,9 @@ export default function Home() {
 
     return (
         <AppPage
-            title="Welcome to CarePulse"
-            description="A unified platform for hospital operations, finance, HR, supply chain, and more."
-            mainButtonTitle="Get Started"
+            title={t('home.title')}
+            description={t('home.description')}
+            mainButtonTitle={t('home.getStarted')}
             mainButtonOnTap={navToDashboard}
         />
     )

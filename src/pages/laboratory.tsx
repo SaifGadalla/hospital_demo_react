@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppPage from '../components/app-page';
 import NumberCard from '../components/number-card';
 import AppDataTable, { type AppColumn, type AppDataRow } from '../components/app-data-table';
@@ -9,6 +10,7 @@ import { useLabOrders } from '../features/labs/api/useLabOrders';
 import CreateLabOrderDialog from '../components/dialogs/CreateLabOrderDialog';
 
 export default function Laboratory() {
+    const { t } = useTranslation();
     const { data, isLoading } = useLabOrders();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
@@ -50,19 +52,19 @@ export default function Laboratory() {
     };
 
     const columns: AppColumn[] = [
-        { label: 'Order #', width: 130 },
-        { label: 'Date', width: 140 },
-        { label: 'Patient', flex: 1.5 },
-        { label: 'Tests', flex: 2 },
-        { label: 'Priority', width: 100 },
-        { label: 'Status', width: 140 },
-        { label: 'Actions', width: 100 },
+        { label: t('laboratory.columns.orderNumber'), width: 130 },
+        { label: t('laboratory.columns.date'), width: 140 },
+        { label: t('laboratory.columns.patient'), flex: 1.5 },
+        { label: t('laboratory.columns.tests'), flex: 2 },
+        { label: t('laboratory.columns.priority'), width: 100 },
+        { label: t('laboratory.columns.status'), width: 140 },
+        { label: t('laboratory.columns.actions'), width: 100 },
     ];
 
     const rows: AppDataRow[] = filteredOrders.map(o => {
         const testsSummary = o.tests && o.tests.length > 0
-            ? o.tests.map((t: any) => t.testName).join(', ')
-            : 'No tests';
+            ? o.tests.map((tItem: any) => tItem.testName).join(', ')
+            : t('common.noTests');
 
         return {
             id: o.id,
@@ -72,7 +74,7 @@ export default function Laboratory() {
                     {o.orderDate ? new Date(o.orderDate).toLocaleString('en-US', {
                         year: 'numeric', month: '2-digit', day: '2-digit',
                         hour: '2-digit', minute: '2-digit', hour12: false
-                    }) : 'N/A'}
+                    }) : t('common.notAvailable')}
                 </span>,
                 <span className="text-bodyMedium font-medium text-text-primary">{o.patientId}</span>,
                 <span className="text-bodyMedium text-text-primary truncate" title={testsSummary}>{testsSummary}</span>,
@@ -93,7 +95,7 @@ export default function Laboratory() {
                     <button
                         onClick={() => setViewOrder(o)}
                         className="p-2 text-primary hover:bg-primary/10 rounded-full transition-colors"
-                        title="View Details"
+                        title={t('common.viewDetails')}
                     >
                         <MdVisibility size={20} />
                     </button>
@@ -101,7 +103,7 @@ export default function Laboratory() {
                         onClick={() => setCancelOrder(o)}
                         disabled={o.status === 'Cancelled'}
                         className={`p-2 rounded-full transition-colors ${o.status === 'Cancelled' ? 'text-divider cursor-not-allowed' : 'text-error hover:bg-error/10'}`}
-                        title="Cancel Order"
+                        title={t('laboratory.cancelOrder')}
                     >
                         <MdCancel size={20} />
                     </button>
@@ -113,15 +115,15 @@ export default function Laboratory() {
     return (
         <>
             <AppPage
-                title="Laboratory"
-                description="Manage lab orders, track sample status, and view test results."
-                mainButtonTitle="New Lab Order"
+                title={t('laboratory.title')}
+                description={t('laboratory.description')}
+                mainButtonTitle={t('laboratory.newLabOrder')}
                 mainButtonOnTap={() => setIsCreateOpen(true)}
                 numberCards={[
-                    <NumberCard key="total" title="Total Orders" value={totalOrders} icon={<MdScience size={24} />} />,
-                    <NumberCard key="pending" title="Pending" value={pendingOrders} icon={<MdPending size={24} />} />,
-                    <NumberCard key="inProgress" title="In Progress" value={inProgressOrders} icon={<MdAutorenew size={24} />} />,
-                    <NumberCard key="stat" title="STAT Priority" value={statOrders} icon={<MdHourglassTop size={24} />} />,
+                    <NumberCard key="total" title={t('laboratory.totalOrders')} value={totalOrders} icon={<MdScience size={24} />} />,
+                    <NumberCard key="pending" title={t('laboratory.pending')} value={pendingOrders} icon={<MdPending size={24} />} />,
+                    <NumberCard key="inProgress" title={t('laboratory.inProgress')} value={inProgressOrders} icon={<MdAutorenew size={24} />} />,
+                    <NumberCard key="stat" title={t('laboratory.statPriority')} value={statOrders} icon={<MdHourglassTop size={24} />} />,
                 ]}
                 hasSearch={true}
                 searchValue={searchTerm}
@@ -133,13 +135,13 @@ export default function Laboratory() {
                         onChange={(e) => setStatusFilter(e.target.value)}
                         className="bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary focus:outline-none focus:border-primary transition-colors cursor-pointer min-w-37.5"
                     >
-                        <option value="">All Statuses</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Sample Collected">Sample Collected</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="">{t('common.allStatuses')}</option>
+                        <option value="Pending">{t('laboratory.pending')}</option>
+                        <option value="Sample Collected">{t('laboratory.filters.sampleCollected')}</option>
+                        <option value="In Progress">{t('laboratory.inProgress')}</option>
+                        <option value="Completed">{t('laboratory.filters.completed')}</option>
+                        <option value="Approved">{t('laboratory.filters.approved')}</option>
+                        <option value="Cancelled">{t('laboratory.filters.cancelled')}</option>
                     </select>,
                     <select
                         key="priority-filter"
@@ -147,22 +149,22 @@ export default function Laboratory() {
                         onChange={(e) => setPriorityFilter(e.target.value)}
                         className="bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary focus:outline-none focus:border-primary transition-colors cursor-pointer min-w-37.5"
                     >
-                        <option value="">All Priorities</option>
-                        <option value="Routine">Routine</option>
-                        <option value="Urgent">Urgent</option>
-                        <option value="STAT">STAT</option>
+                        <option value="">{t('common.allPriorities')}</option>
+                        <option value="Routine">{t('laboratory.filters.routine')}</option>
+                        <option value="Urgent">{t('laboratory.filters.urgent')}</option>
+                        <option value="STAT">{t('laboratory.filters.stat')}</option>
                     </select>,
                     <button
                         key="clear-filters"
                         onClick={handleClearFilters}
                         className="text-text-secondary hover:text-text-primary hover:bg-black/5 dark:hover:bg-white/5 px-4 py-2.5 rounded-xl text-buttonText transition-colors"
                     >
-                        Clear
+                        {t('common.clear')}
                     </button>
                 ]}
                 table={
                     isLoading ? (
-                        <div className="p-8 text-center text-text-secondary">Loading lab orders...</div>
+                        <div className="p-8 text-center text-text-secondary">{t('laboratory.loadingLabOrders')}</div>
                     ) : (
                         <AppDataTable columns={columns} rows={rows} />
                     )
@@ -178,31 +180,31 @@ export default function Laboratory() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-full">
                         <div className="p-6 border-b border-divider">
-                            <h2 className="text-h3 text-text-primary">Order Details: {viewOrder.orderNumber}</h2>
+                            <h2 className="text-h3 text-text-primary">{t('laboratory.orderDetails')}: {viewOrder.orderNumber}</h2>
                         </div>
                         <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
-                            <AppDetailRow label="Order Number" value={viewOrder.orderNumber} />
-                            <AppDetailRow label="Patient" value={viewOrder.patientId} />
-                            <AppDetailRow label="Doctor ID" value={viewOrder.doctorId} />
-                            <AppDetailRow label="Priority" value={viewOrder.priority} />
-                            <AppDetailRow label="Status" value={viewOrder.status} />
-                            <AppDetailRow label="Clinical Indication" value={viewOrder.clinicalIndication} />
-                            <AppDetailRow label="Specimen Type" value={viewOrder.specimenType} />
-                            <AppDetailRow label="Order Date" value={viewOrder.orderDate ? new Date(viewOrder.orderDate).toLocaleString('en-US', {
+                            <AppDetailRow label={t('laboratory.detail.orderNumber')} value={viewOrder.orderNumber} />
+                            <AppDetailRow label={t('laboratory.detail.patient')} value={viewOrder.patientId} />
+                            <AppDetailRow label={t('laboratory.detail.doctorId')} value={viewOrder.doctorId} />
+                            <AppDetailRow label={t('laboratory.detail.priority')} value={viewOrder.priority} />
+                            <AppDetailRow label={t('laboratory.detail.status')} value={viewOrder.status} />
+                            <AppDetailRow label={t('laboratory.detail.clinicalIndication')} value={viewOrder.clinicalIndication} />
+                            <AppDetailRow label={t('laboratory.detail.specimenType')} value={viewOrder.specimenType} />
+                            <AppDetailRow label={t('laboratory.detail.orderDate')} value={viewOrder.orderDate ? new Date(viewOrder.orderDate).toLocaleString('en-US', {
                                 month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false
-                            }) : 'N/A'} />
+                            }) : t('common.notAvailable')} />
 
                             {viewOrder.tests && viewOrder.tests.length > 0 && (
                                 <>
                                     <hr className="border-divider my-2" />
-                                    <h4 className="text-h4 text-text-primary mb-2">Tests</h4>
+                                    <h4 className="text-h4 text-text-primary mb-2">{t('laboratory.tests')}</h4>
                                     <div className="flex flex-col gap-2">
-                                        {viewOrder.tests.map((t: any, i: number) => (
+                                        {viewOrder.tests.map((tItem: any, i: number) => (
                                             <div key={i} className="flex items-center gap-2 text-bodyMedium text-text-secondary">
                                                 <span className="w-1.5 h-1.5 rounded-full bg-border-theme shrink-0"></span>
-                                                <span className="font-medium text-text-primary">{t.testName}</span>
+                                                <span className="font-medium text-text-primary">{tItem.testName}</span>
                                                 <span className="mx-1">&mdash;</span>
-                                                <span>{t.status}</span>
+                                                <span>{tItem.status}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -214,7 +216,7 @@ export default function Laboratory() {
                                 onClick={() => setViewOrder(null)}
                                 className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                Close
+                                {t('common.close')}
                             </button>
                         </div>
                     </div>
@@ -226,9 +228,9 @@ export default function Laboratory() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="p-6">
-                            <h2 className="text-h3 text-text-primary mb-2">Cancel Order</h2>
+                            <h2 className="text-h3 text-text-primary mb-2">{t('laboratory.cancelOrder')}</h2>
                             <p className="text-bodyMedium text-text-secondary">
-                                Are you sure you want to cancel order {cancelOrder.orderNumber}?
+                                {t('laboratory.cancelOrderMessage', { number: cancelOrder.orderNumber })}
                             </p>
                         </div>
                         <div className="p-4 bg-surface flex justify-end gap-3 border-t border-divider">
@@ -236,13 +238,13 @@ export default function Laboratory() {
                                 onClick={() => setCancelOrder(null)}
                                 className="px-5 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                No
+                                {t('common.no')}
                             </button>
                             <button
                                 onClick={confirmCancel}
                                 className="px-5 py-2 rounded-xl text-buttonText text-error hover:bg-error/10 transition-colors"
                             >
-                                Yes, Cancel
+                                {t('common.yesCancel')}
                             </button>
                         </div>
                     </div>

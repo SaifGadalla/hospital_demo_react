@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SurgeryBooking } from '../../features/surgery/types';
 import { useCreateSurgeryBooking } from '../../features/surgery/api/useCreateSurgeryBooking';
 
 export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
     const { mutateAsync: createBooking, isPending } = useCreateSurgeryBooking();
     const [formData, setFormData] = useState<Partial<SurgeryBooking>>({
         patientId: '',
@@ -31,13 +33,13 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="p-6 border-b border-divider shrink-0">
-                    <h2 className="text-h3 text-text-primary">Book Surgery</h2>
+                    <h2 className="text-h3 text-text-primary">{t('dialogs.createSurgeryBooking.title')}</h2>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
                     <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-4">
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Patient ID</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.patientId')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -47,7 +49,7 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Patient Name</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.patientName')}</label>
                                 <input 
                                     required
                                     type="text"
@@ -59,7 +61,7 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Procedure</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.procedure')}</label>
                             <input 
                                 required
                                 type="text"
@@ -71,7 +73,7 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
 
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Scheduled Date & Time</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.scheduledDateTime')}</label>
                                 <input 
                                     required
                                     type="datetime-local"
@@ -81,7 +83,7 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                                 />
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Estimated Duration (mins)</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.estimatedDuration')}</label>
                                 <input 
                                     required
                                     type="number"
@@ -94,22 +96,22 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
 
                         <div className="flex gap-4">
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Priority</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.priority')}</label>
                                 <select 
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary" 
                                     value={formData.priority} 
                                     onChange={e => setFormData({ ...formData, priority: e.target.value })}
                                 >
-                                    <option value="Routine">Routine</option>
-                                    <option value="Urgent">Urgent</option>
-                                    <option value="Emergency">Emergency</option>
+                                    <option value="Routine">{t('dialogs.createSurgeryBooking.routine')}</option>
+                                    <option value="Urgent">{t('dialogs.createSurgeryBooking.urgent')}</option>
+                                    <option value="Emergency">{t('dialogs.createSurgeryBooking.emergency')}</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-1 flex-1">
-                                <label className="text-bodySmall text-text-secondary">Operating Room</label>
+                                <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.operatingRoom')}</label>
                                 <input 
                                     type="text"
-                                    placeholder="e.g. OR-1"
+                                    placeholder={t('dialogs.createSurgeryBooking.operatingRoomPlaceholder')}
                                     className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary" 
                                     value={formData.operatingRoomNumber} 
                                     onChange={e => setFormData({ ...formData, operatingRoomNumber: e.target.value })} 
@@ -118,11 +120,11 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                         </div>
                         
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Anesthesia Type</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.anesthesiaType')}</label>
                             <input 
                                 required
                                 type="text"
-                                placeholder="e.g. General, Local, Spinal"
+                                placeholder={t('dialogs.createSurgeryBooking.anesthesiaPlaceholder')}
                                 className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary" 
                                 value={formData.anesthesiaType} 
                                 onChange={e => setFormData({ ...formData, anesthesiaType: e.target.value })} 
@@ -130,7 +132,7 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                         </div>
 
                         <div className="flex flex-col gap-1">
-                            <label className="text-bodySmall text-text-secondary">Notes</label>
+                            <label className="text-bodySmall text-text-secondary">{t('dialogs.createSurgeryBooking.notes')}</label>
                             <textarea 
                                 className="bg-surface-elevated border border-border-theme rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-primary min-h-20" 
                                 value={formData.notes} 
@@ -145,14 +147,14 @@ export default function CreateSurgeryBookingDialog({ onClose }: { onClose: () =>
                             onClick={onClose}
                             className="px-6 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                         >
-                            Cancel
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={isPending}
                             className="px-6 py-2 rounded-xl text-buttonText bg-primary text-white hover:bg-primary-dark transition-colors disabled:opacity-50"
                         >
-                            {isPending ? 'Saving...' : 'Book Surgery'}
+                            {isPending ? t('common.saving') : t('dialogs.createSurgeryBooking.bookSurgery')}
                         </button>
                     </div>
                 </form>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppPage from '../components/app-page';
 import NumberCard from '../components/number-card';
 import AppDataTable, { type AppColumn, type AppDataRow } from '../components/app-data-table';
@@ -12,6 +13,7 @@ export default function Pharmacy() {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const { t } = useTranslation();
 
     // Dialog States
     const [dispenseTarget, setDispenseTarget] = useState<any | null>(null);
@@ -47,19 +49,19 @@ export default function Pharmacy() {
     };
 
     const columns: AppColumn[] = [
-        { label: 'Rx #', width: 120 },
-        { label: 'Date', width: 120 },
-        { label: 'Patient', flex: 1.5 },
-        { label: 'Diagnosis', flex: 1.5 },
-        { label: 'Items', flex: 2 },
-        { label: 'Status', width: 110 },
-        { label: 'Actions', width: 110 },
+        { label: t('pharmacy.columns.rxNumber'), width: 120 },
+        { label: t('pharmacy.columns.date'), width: 120 },
+        { label: t('pharmacy.columns.patient'), flex: 1.5 },
+        { label: t('pharmacy.columns.diagnosis'), flex: 1.5 },
+        { label: t('pharmacy.columns.items'), flex: 2 },
+        { label: t('pharmacy.columns.status'), width: 110 },
+        { label: t('pharmacy.columns.actions'), width: 110 },
     ];
 
     const rows: AppDataRow[] = filteredPrescriptions.map(p => {
         const itemsSummary = p.items && p.items.length > 0
             ? p.items.map((item: any) => `${item.medicationName} ${item.dosage}`).join(', ')
-            : 'No Items';
+            : t('common.noItems');
 
         return {
             id: p.id,
@@ -80,7 +82,7 @@ export default function Pharmacy() {
                         <button
                             onClick={() => setDispenseTarget(p)}
                             className="p-2 text-success hover:bg-success/10 rounded-full transition-colors"
-                            title="Dispense"
+                            title={t('pharmacy.dispense')}
                         >
                             <MdCheckCircleOutline size={20} />
                         </button>
@@ -89,7 +91,7 @@ export default function Pharmacy() {
                         onClick={() => setCancelTarget(p)}
                         disabled={p.status === 'Cancelled'}
                         className={`p-2 rounded-full transition-colors ${p.status === 'Cancelled' ? 'text-divider cursor-not-allowed' : 'text-error hover:bg-error/10'}`}
-                        title="Cancel Prescription"
+                        title={t('pharmacy.cancelPrescription')}
                     >
                         <MdCancel size={20} />
                     </button>
@@ -101,15 +103,15 @@ export default function Pharmacy() {
     return (
         <>
             <AppPage
-                title="Pharmacy"
-                description="Manage prescriptions, dispensations, and inventory."
-                mainButtonTitle="New Prescription"
+                title={t('pharmacy.title')}
+                description={t('pharmacy.description')}
+                mainButtonTitle={t('pharmacy.newPrescription')}
                 mainButtonOnTap={() => setIsCreateOpen(true)}
                 numberCards={[
-                    <NumberCard key="total" title="Total Rx" value={totalRx} icon={<MdMedication size={24} />} />,
-                    <NumberCard key="pending" title="Pending" value={pendingRx} icon={<MdPending size={24} />} />,
-                    <NumberCard key="dispensed" title="Dispensed" value={dispensedRx} icon={<MdCheckCircle size={24} />} />,
-                    <NumberCard key="items" title="Line Items" value={totalItems} icon={<MdList size={24} />} />,
+                    <NumberCard key="total" title={t('pharmacy.totalRx')} value={totalRx} icon={<MdMedication size={24} />} />,
+                    <NumberCard key="pending" title={t('pharmacy.pending')} value={pendingRx} icon={<MdPending size={24} />} />,
+                    <NumberCard key="dispensed" title={t('pharmacy.dispensed')} value={dispensedRx} icon={<MdCheckCircle size={24} />} />,
+                    <NumberCard key="items" title={t('pharmacy.lineItems')} value={totalItems} icon={<MdList size={24} />} />,
                 ]}
                 hasSearch={true}
                 searchValue={searchTerm}
@@ -121,15 +123,15 @@ export default function Pharmacy() {
                         onChange={(e) => setStatusFilter(e.target.value)}
                         className="bg-surface-elevated border border-border-theme rounded-xl px-4 py-2.5 text-bodyMedium text-text-primary focus:outline-none focus:border-primary transition-colors cursor-pointer min-w-37.5"
                     >
-                        <option value="">All Statuses</option>
-                        <option value="Cancelled">Cancelled</option>
-                        <option value="Dispensed">Dispensed</option>
-                        <option value="Pending">Pending</option>
+                        <option value="">{t('common.allStatuses')}</option>
+                        <option value="Cancelled">{t('common.cancel')}</option>
+                        <option value="Dispensed">{t('pharmacy.dispensed')}</option>
+                        <option value="Pending">{t('pharmacy.pending')}</option>
                     </select>
                 ]}
                 table={
                     isLoading ? (
-                        <div className="p-8 text-center text-text-secondary">Loading prescriptions...</div>
+                        <div className="p-8 text-center text-text-secondary">{t('pharmacy.loadingPrescriptions')}</div>
                     ) : (
                         <AppDataTable columns={columns} rows={rows} />
                     )
@@ -145,9 +147,9 @@ export default function Pharmacy() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="p-6">
-                            <h2 className="text-h3 text-text-primary mb-2">Dispense Prescription</h2>
+                            <h2 className="text-h3 text-text-primary mb-2">{t('pharmacy.dispensePrescription')}</h2>
                             <p className="text-bodyMedium text-text-secondary">
-                                Are you sure you want to dispense prescription {dispenseTarget.prescriptionNumber}?
+                                {t('pharmacy.dispenseMessage', { number: dispenseTarget.prescriptionNumber })}
                             </p>
                         </div>
                         <div className="p-4 bg-surface flex justify-end gap-3 border-t border-divider">
@@ -155,13 +157,13 @@ export default function Pharmacy() {
                                 onClick={() => setDispenseTarget(null)}
                                 className="px-5 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </button>
                             <button
                                 onClick={confirmDispense}
                                 className="px-5 py-2 rounded-xl text-buttonText text-success hover:bg-success/10 transition-colors"
                             >
-                                Dispense
+                                {t('pharmacy.dispense')}
                             </button>
                         </div>
                     </div>
@@ -173,9 +175,9 @@ export default function Pharmacy() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
                     <div className="bg-surface rounded-2xl border border-border-theme shadow-2xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="p-6">
-                            <h2 className="text-h3 text-text-primary mb-2">Cancel Prescription</h2>
+                            <h2 className="text-h3 text-text-primary mb-2">{t('pharmacy.cancelPrescription')}</h2>
                             <p className="text-bodyMedium text-text-secondary">
-                                Are you sure you want to cancel prescription {cancelTarget.prescriptionNumber}?
+                                {t('pharmacy.cancelMessage', { number: cancelTarget.prescriptionNumber })}
                             </p>
                         </div>
                         <div className="p-4 bg-surface flex justify-end gap-3 border-t border-divider">
@@ -183,13 +185,13 @@ export default function Pharmacy() {
                                 onClick={() => setCancelTarget(null)}
                                 className="px-5 py-2 rounded-xl text-buttonText text-text-secondary hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                             >
-                                No
+                                {t('common.no')}
                             </button>
                             <button
                                 onClick={confirmCancel}
                                 className="px-5 py-2 rounded-xl text-buttonText text-error hover:bg-error/10 transition-colors"
                             >
-                                Yes, Cancel
+                                {t('common.yesCancel')}
                             </button>
                         </div>
                     </div>
